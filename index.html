@@ -215,6 +215,17 @@ footer.site .badge{width:38px;height:38px;font-size:21px}
   #areas .in,#contact .in,#faq .in{padding:52px 18px}
   .dfx-nav>a:not(:last-child){display:none}
 }
+
+.nav-toggle{display:none;flex-direction:column;justify-content:center;align-items:center;gap:5px;width:44px;height:44px;background:none;border:0;cursor:pointer;flex:none}
+.nav-toggle span{display:block;width:22px;height:2px;background:#fff;border-radius:2px}
+@media(max-width:880px){
+ .nav-toggle{display:flex}
+ .dfx-bar{position:relative;flex-wrap:nowrap}
+ .dfx-nav>a:not(.pill){display:none}
+ .dfx-bar.open .dfx-nav{position:absolute;top:calc(100% - 4px);left:16px;right:16px;display:flex;flex-direction:column;align-items:stretch;gap:0;background:var(--brand-d);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:8px 20px 18px;box-shadow:0 24px 60px rgba(0,0,0,.45);z-index:70}
+ .dfx-bar.open .dfx-nav a:not(.pill){display:block;padding:14px 2px;font-size:16px;border-bottom:1px solid rgba(255,255,255,.08)}
+ .dfx-bar.open .dfx-nav a.pill{margin-top:14px;justify-content:center}
+}
 </style>
 </head>
 <body>
@@ -232,7 +243,7 @@ footer.site .badge{width:38px;height:38px;font-size:21px}
       <a href="/blog">Blog</a>
       <a href="/about">About</a>
       <a class="pill" href="#contact">Get a free review</a>
-    </nav>
+    </nav><button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
 
@@ -501,5 +512,6 @@ document.getElementById('nlform').addEventListener('submit',function(e){
   window.location.href='mailto:faiella.daniel@gmail.com?subject='+encodeURIComponent('Newsletter signup')+'&body='+encodeURIComponent('Please add me to the newsletter: '+email);
 });
 </script>
+<script>document.querySelectorAll('.nav-toggle').forEach(function(b){b.addEventListener('click',function(){var bar=b.closest('.bar')||b.closest('.dfx-bar');var open=bar.classList.toggle('open');b.setAttribute('aria-expanded',open)})});document.addEventListener('click',function(e){document.querySelectorAll('.bar.open,.dfx-bar.open').forEach(function(bar){if(!bar.contains(e.target)){bar.classList.remove('open');var t=bar.querySelector('.nav-toggle');t&&t.setAttribute('aria-expanded','false')}})});</script>
 </body>
 </html>
