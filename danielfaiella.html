@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daniel J. Faiella · Insurance Advisors</title>
+<meta name="description" content="Daniel J. Faiella — Licensed insurance advisor & educator in Carson City, NV. Save my contact and connect." />
+<meta name="theme-color" content="#182741" />
+<link rel="canonical" href="https://faiellaadvisors.com/danielfaiella" />
+<meta name="robots" content="noindex,follow" />
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content="Daniel J. Faiella Insurance Advisors" />
+<meta property="og:title" content="Daniel J. Faiella · Insurance Advisors" />
+<meta property="og:description" content="Daniel J. Faiella — Licensed insurance advisor &amp; educator in Carson City, NV. Save my contact and connect." />
+<meta property="og:url" content="https://faiellaadvisors.com/danielfaiella" />
+<meta property="og:image" content="https://faiellaadvisors.com/images/og/services.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Daniel J. Faiella · Insurance Advisors" />
+<meta name="twitter:description" content="Licensed insurance advisor &amp; educator in Carson City, NV. Save my contact and connect." />
+<meta name="twitter:image" content="https://faiellaadvisors.com/images/og/services.png" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ProfilePage","@id":"https://faiellaadvisors.com/danielfaiella#page","url":"https://faiellaadvisors.com/danielfaiella","name":"Daniel J. Faiella \u00b7 Insurance Advisors \u2014 Digital Contact Card","inLanguage":"en-US","mainEntity":{"@type":"Person","@id":"https://faiellaadvisors.com/#daniel","name":"Daniel J. Faiella","jobTitle":"Licensed Advisor & Educator","telephone":"+1-775-315-5572","email":"faiella.daniel@gmail.com","url":"https://faiellaadvisors.com/","image":"https://faiellaadvisors.com/images/daniel-faiella-portrait.webp","address":{"@type":"PostalAddress","addressLocality":"Carson City","addressRegion":"NV","addressCountry":"US"},"worksFor":{"@type":"InsuranceAgency","@id":"https://faiellaadvisors.com/#agency","name":"Daniel J. Faiella Insurance Advisors","url":"https://faiellaadvisors.com/","hasMap":"https://maps.google.com/?cid=7820892945307879894","sameAs":["https://share.google/VQ8SMW8ZVAdmNxTGl","https://maps.google.com/?cid=7820892945307879894"]},"knowsAbout":["Medicare","Long-Term Care","Life Insurance","Income Replacement","Annuities & Retirement"]}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Figtree:wght@400;500;600;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy:        #182741;
+    --navy-lift:   #21324f;
+    --navy-deep:   #0f1a30;
+    --gold:        #c89a4e;
+    --gold-bright: #dcb872;
+    --gold-soft:   #e7cf9e;
+    --cream:       #f6f1e7;
+    --ink:         #f4f0e7;
+    --ink-soft:    #b7c1d4;
+    --ink-dim:     #8390a6;
+    --card:        rgba(28, 42, 70, 0.55);
+    --card-line:   rgba(220, 184, 114, 0.16);
+    --row:         rgba(255, 255, 255, 0.04);
+    --row-hover:   rgba(220, 184, 114, 0.10);
+    --maxw:        480px;
+    font-synthesis: none;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: "Figtree", system-ui, sans-serif;
+    color: var(--ink);
+    background: var(--navy-deep);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+  a { color: var(--gold-bright); text-decoration: none; }
+  a:hover { color: var(--gold-soft); }
+
+  /* ---- Branded navy backdrop ---- */
+  .bg { position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background:
+      radial-gradient(125% 90% at 50% -12%, #24375c 0%, #1a2b48 42%, #111d34 100%);
+  }
+  .bg::before {
+    content: "DF";
+    position: absolute; top: -12%; left: -8%;
+    font-family: "Playfair Display", serif; font-weight: 700; font-style: italic;
+    font-size: 68vh; line-height: 1; letter-spacing: -0.05em;
+    color: rgba(255, 255, 255, 0.035);
+    pointer-events: none; user-select: none;
+  }
+  .bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(80% 45% at 50% 0%, rgba(220,184,114,0.10), transparent 60%),
+      linear-gradient(180deg, rgba(15,26,48,0) 55%, rgba(12,20,38,0.55) 100%);
+  }
+
+  .wrap {
+    position: relative; z-index: 1;
+    max-width: var(--maxw); margin: 0 auto;
+    padding: clamp(20px, 6vw, 44px) clamp(14px, 4.5vw, 26px) 46px;
+    display: flex; flex-direction: column; gap: 18px;
+  }
+
+  /* ---- Outer frosted card ---- */
+  .card {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: clamp(16px, 5vw, 24px) clamp(14px, 4.5vw, 22px) clamp(22px, 6vw, 30px);
+    border-radius: 30px;
+    background: linear-gradient(180deg, rgba(40,58,94,0.42) 0%, rgba(22,34,60,0.52) 100%);
+    border: 1px solid rgba(220,184,114,0.20);
+    backdrop-filter: blur(18px) saturate(1.06);
+    -webkit-backdrop-filter: blur(18px) saturate(1.06);
+    box-shadow: 0 34px 80px rgba(5,10,22,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  /* ---- Identity ---- */
+  .id { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 13px; padding: 12px 12px 6px; }
+  .mark {
+    width: 78px; height: 78px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: radial-gradient(120% 120% at 30% 25%, #22345480, #131f38);
+    border: 1.5px solid var(--gold);
+    box-shadow: 0 10px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 4px rgba(200,154,78,0.08);
+  }
+  .mark span {
+    font-family: "Playfair Display", serif; font-weight: 700;
+    font-size: 33px; letter-spacing: 0.01em;
+    background: linear-gradient(160deg, var(--gold-soft), var(--gold));
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); display: flex; align-items: center; gap: 9px;
+  }
+  .name {
+    font-family: "Playfair Display", serif; font-weight: 700;
+    font-size: clamp(30px, 8.6vw, 40px); letter-spacing: -0.01em; line-height: 1.04;
+    color: #fff;
+  }
+  .role { font-size: 14.5px; color: var(--ink-soft); font-weight: 500; }
+  .slogan {
+    font-family: "Caveat", cursive; font-weight: 600;
+    font-size: 22px; line-height: 1; color: var(--gold-bright);
+    margin-top: 2px;
+  }
+
+  /* ---- Primary CTA ---- */
+  .cta {
+    display: flex; align-items: center; justify-content: center; gap: 11px;
+    width: 100%; padding: 17px 20px; border: none; border-radius: 15px;
+    font-family: "Figtree", sans-serif; font-size: 16.5px; font-weight: 700; letter-spacing: 0.005em;
+    color: var(--navy-deep);
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 60%, #b98a3f 120%);
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(200,154,78,0.30), inset 0 1px 0 rgba(255,255,255,0.35);
+    transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 16px 38px rgba(200,154,78,0.4); filter: brightness(1.04); }
+  .cta:active { transform: translateY(0); }
+  .cta svg { width: 20px; height: 20px; }
+  .cta-note { text-align: center; font-size: 12.5px; color: var(--ink-dim); margin-top: -3px; }
+
+  /* ---- Panels ---- */
+  .panel {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 18px;
+  }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ink-dim); padding: 4px 6px 0;
+  }
+
+  /* ---- Contact rows ---- */
+  .rows { padding: 8px; display: flex; flex-direction: column; gap: 4px; }
+  .row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 13px 14px; border-radius: 13px; color: var(--ink); text-decoration: none;
+    background: var(--row); transition: background .15s ease, transform .12s ease;
+  }
+  .row:hover { background: var(--row-hover); }
+  .row:active { transform: scale(0.985); }
+  .row .ico {
+    flex: none; width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center;
+    background: rgba(220,184,114,0.10); border: 1px solid rgba(220,184,114,0.18);
+  }
+  .row .ico svg { width: 19px; height: 19px; }
+  .row .txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .row .k { font-size: 11px; color: var(--gold); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+  .row .v { font-size: 15.5px; font-weight: 600; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .row .chev { flex: none; color: var(--ink-dim); }
+  .row .chev svg { width: 16px; height: 16px; }
+
+  /* ---- Specialties strip ---- */
+  .spec { padding: 16px 16px 17px; }
+  .spec .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .chip {
+    font-size: 12.5px; font-weight: 600; color: var(--cream);
+    padding: 7px 13px; border-radius: 99px;
+    background: rgba(220,184,114,0.08); border: 1px solid rgba(220,184,114,0.22);
+    display: inline-flex; align-items: center; gap: 7px;
+  }
+  .chip::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); }
+
+  /* ---- Socials ---- */
+  .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px; }
+  .social {
+    display: flex; flex-direction: column; align-items: center; gap: 9px;
+    padding: 16px 8px; border-radius: 14px; text-decoration: none; color: var(--ink);
+    background: var(--row); border: 1px solid rgba(255,255,255,0.05);
+    transition: background .15s ease, border-color .15s ease, transform .12s ease;
+  }
+  .social:hover { background: var(--row-hover); border-color: rgba(220,184,114,0.3); transform: translateY(-2px); }
+  .social:active { transform: translateY(0); }
+  .social .sico {
+    width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+    background: radial-gradient(120% 120% at 30% 25%, #26395a, #14203a);
+    border: 1px solid rgba(220,184,114,0.28);
+    transition: background .18s ease, border-color .18s ease;
+  }
+  .social .sico svg { width: 20px; height: 20px; fill: var(--gold-bright); transition: fill .18s ease; }
+  .social .sname { font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .social.fb:hover .sico { background: #1877f2; border-color: #1877f2; }
+  .social.ig:hover .sico { background: linear-gradient(135deg, #feda75, #d62976 48%, #962fbf 82%, #4f5bd5); border-color: transparent; }
+  .social.x:hover  .sico { background: #000; border-color: #000; }
+  .social:hover .sico svg { fill: #fff; }
+  .social:hover .sname { color: #fff; }
+
+  .foot { text-align: center; padding: 10px 0 0; color: var(--ink-dim); font-size: 12px; line-height: 1.7; }
+  .foot .sig { font-family: "Caveat", cursive; font-weight: 700; font-size: 20px; color: var(--gold); display: block; }
+  .foot a { color: var(--ink-soft); }
+  .foot a:hover { color: var(--gold-soft); }
+
+  /* ---- Toast ---- */
+  .toast {
+    position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(20px);
+    background: rgba(20, 30, 52, 0.96); border: 1px solid var(--card-line); color: var(--ink);
+    padding: 12px 18px; border-radius: 12px; font-size: 13.5px; font-weight: 600;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5); z-index: 50; opacity: 0; pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease; backdrop-filter: blur(10px);
+    display: flex; align-items: center; gap: 9px;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast svg { width: 17px; height: 17px; color: var(--gold-bright); }
+</style>
+</head>
+<body>
+  <div class="bg"></div>
+
+  <main class="wrap">
+
+    <div class="card">
+
+    <!-- Identity -->
+    <header class="id">
+      <div class="mark" aria-hidden="true"><span>DF</span></div>
+      <div class="eyebrow">Insurance Advisors · Carson City</div>
+      <h1 class="name">Daniel J. Faiella</h1>
+      <div class="role">Licensed Advisor &amp; Educator</div>
+      <div class="slogan">the advisor who teaches first</div>
+    </header>
+
+    <!-- Primary CTA -->
+    <button class="cta" id="saveBtn" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/>
+      </svg>
+      Add to Contacts
+    </button>
+    <p class="cta-note">Works on iPhone &amp; Android — saves straight to your phone</p>
+
+    <!-- Contact -->
+    <p class="section-label">Get in touch</p>
+    <section class="panel">
+      <div class="rows">
+        <a class="row" href="tel:+17753155572">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#dcb872" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
+          <span class="txt"><span class="k">Call or text</span><span class="v">(775) 315-5572</span></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+        <a class="row" href="mailto:faiella.daniel@gmail.com">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#dcb872" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg></span>
+          <span class="txt"><span class="k">Email</span><span class="v">faiella.daniel@gmail.com</span></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+        <a class="row" href="https://faiellaadvisors.com" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#dcb872" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <span class="txt"><span class="k">Website</span><span class="v">faiellaadvisors.com</span></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+        <a class="row" href="https://maps.google.com/?q=Carson+City,+Nevada" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#dcb872" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <span class="txt"><span class="k">Based in</span><span class="v">Carson City, Nevada</span></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    <!-- Specialties -->
+    <p class="section-label">What Daniel helps with</p>
+    <section class="panel spec">
+      <div class="chips">
+        <span class="chip">Medicare</span>
+        <span class="chip">Long-Term Care</span>
+        <span class="chip">Life Insurance</span>
+        <span class="chip">Income Replacement</span>
+        <span class="chip">Annuities &amp; Retirement</span>
+      </div>
+    </section>
+
+    <!-- Socials -->
+    <p class="section-label">Connect</p>
+    <section class="panel">
+      <div class="social-grid">
+        <!-- Replace href="#" with Daniel's Facebook URL -->
+        <a class="social fb" href="#" aria-label="Facebook">
+          <span class="sico"><svg viewBox="0 0 24 24"><path d="M15.5 8.5h2.2V5.2C17.3 5.07 16.2 5 15 5c-2.5 0-4.2 1.53-4.2 4.34V12H7.9v3.6h2.9V24h3.6v-8.4h2.78l.44-3.6h-3.22V9.7c0-1.04.28-1.75 1.77-1.75z"/></svg></span>
+          <span class="sname">Facebook</span>
+        </a>
+        <!-- Replace href="#" with Daniel's Instagram URL -->
+        <a class="social ig" href="#" aria-label="Instagram">
+          <span class="sico"><svg viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16zm0 1.62c-3.15 0-3.52.01-4.76.07-1.15.05-1.77.24-2.19.41-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.17.42-.36 1.04-.41 2.19-.06 1.24-.07 1.61-.07 4.76s.01 3.52.07 4.76c.05 1.15.24 1.77.41 2.19.21.55.47.94.88 1.35.41.41.8.67 1.35.88.42.17 1.04.36 2.19.41 1.24.06 1.61.07 4.76.07s3.52-.01 4.76-.07c1.15-.05 1.77-.24 2.19-.41.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.17-.42.36-1.04.41-2.19.06-1.24.07-1.61.07-4.76s-.01-3.52-.07-4.76c-.05-1.15-.24-1.77-.41-2.19a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.42-.17-1.04-.36-2.19-.41-1.24-.06-1.61-.07-4.76-.07zm0 2.76a5.3 5.3 0 1 1 0 10.6 5.3 5.3 0 0 1 0-10.6zm0 8.74a3.44 3.44 0 1 0 0-6.88 3.44 3.44 0 0 0 0 6.88zm6.74-8.94a1.24 1.24 0 1 1-2.48 0 1.24 1.24 0 0 1 2.48 0z"/></svg></span>
+          <span class="sname">Instagram</span>
+        </a>
+        <!-- Replace href="#" with Daniel's X (Twitter) URL -->
+        <a class="social x" href="#" aria-label="X">
+          <span class="sico"><svg viewBox="0 0 24 24"><path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.42l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93zm-1.29 19.5h2.04L6.49 3.24H4.3l13.31 17.41z"/></svg></span>
+          <span class="sname">X</span>
+        </a>
+      </div>
+    </section>
+
+
+    <!-- Google review (added: Daniel's GBP review link) -->
+    <p class="section-label">Enjoyed working with Daniel?</p>
+    <section class="panel">
+      <div class="rows">
+        <a class="row" href="https://g.page/r/CdZJb2eyZIlsEBM/review" target="_blank" rel="noopener">
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#dcb872" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="txt"><span class="k">Leave a review</span><span class="v">Review Daniel on Google</span></span>
+          <span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></span>
+        </a>
+      </div>
+    </section>
+
+    </div><!-- /.card -->
+
+    <p class="foot">
+      <span class="sig">Daniel J. Faiella</span>
+      Independent · A+ rated carriers only · The first conversation is always free
+      <br/><a href="https://faiellaadvisors.com" target="_blank" rel="noopener">faiellaadvisors.com</a>
+    </p>
+  </main>
+
+  <div class="toast" id="toast">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <span id="toastMsg">Saving contact…</span>
+  </div>
+
+  <script>
+    const vcard = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      'N:Faiella;Daniel;J.;;',
+      'FN:Daniel J. Faiella',
+      'ORG:Daniel J. Faiella Insurance Advisors',
+      'TITLE:Licensed Advisor & Educator',
+      'TEL;TYPE=CELL,VOICE:+17753155572',
+      'EMAIL;TYPE=WORK,INTERNET:faiella.daniel@gmail.com',
+      'URL:https://faiellaadvisors.com',
+      'ADR;TYPE=WORK:;;;Carson City;NV;;USA',
+      'NOTE:Medicare, Long-Term Care, Life Insurance, Income Replacement, Annuities & Retirement. The first conversation is always free.',
+      'END:VCARD'
+    ].join('\r\n');
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toastMsg').textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window.__tt);
+      window.__tt = setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const blob = new Blob([vcard], { type: 'text/vcard;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'Daniel-Faiella.vcf';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      showToast('Saving Daniel\u2019s contact card\u2026');
+    });
+  </script>
+</body>
+</html>
