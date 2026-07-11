@@ -94,16 +94,16 @@ current-year TPMO wording with your FMO/upline before launch** — CMS updates i
 
 ## 3. ⚠️ Launch blockers — the site can't rank until these are done
 
-1. **Point the real domain.** `faiellaadvisors.com` is not yet connected to the Vercel
+1. **Point the real domain.** `faiellainsurance.com` is not yet connected to the Vercel
    project (it doesn't resolve). All canonical URLs, the sitemap, and schema are built for
-   `https://faiellaadvisors.com`. **Attach the domain to the `daniel-faiella-insurance-advisors`
+   `https://faiellainsurance.com`. **Attach the domain to the `daniel-faiella-insurance-advisors`
    Vercel project.** (Internal links are root-relative, so the site also works fine on the
    `.vercel.app` URL in the meantime.) If you decide to stay on a different final domain,
-   do a find-and-replace of `https://faiellaadvisors.com` across the repo.
+   do a find-and-replace of `https://faiellainsurance.com` across the repo.
 2. **Turn OFF Vercel Deployment Protection.** The deployment currently returns **HTTP 403 to
    the public**, including Googlebot — meaning *nothing here can be indexed*. In Vercel →
    Project → Settings → Deployment Protection, disable protection for production.
-3. **After #1 and #2:** verify `faiellaadvisors.com` and submit `sitemap.xml` in **Google
+3. **After #1 and #2:** verify `faiellainsurance.com` and submit `sitemap.xml` in **Google
    Search Console**, and set up **Bing Webmaster Tools**.
 
 ---
