@@ -53,7 +53,7 @@ nav.main a:hover{color:var(--accent)}
 .pill.ghost:hover{border-color:#fff;background:rgba(255,255,255,.06);filter:none}
 /* hero */
 .hero{position:relative;background:var(--brand-d);color:#fff;overflow:hidden}
-.hero .glow{position:absolute;inset:0;background:radial-gradient(800px 600px at 80% 25%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 62%)}
+.hero .glow{position:absolute;inset:0;background:radial-gradient(800px 600px at 80% 25%,color-mix(in srgb,var(--accent) 32%,transparent),transparent 62%)}
 .hero .wm{position:absolute;top:-70px;left:-40px;font-family:'Newsreader',serif;font-size:340px;font-weight:700;color:rgba(255,255,255,.045);line-height:1;pointer-events:none;user-select:none}
 .hero-inner{position:relative;max-width:1180px;margin:0 auto;padding:158px 36px 92px}
 .crumbs{font-size:12.5px;letter-spacing:.02em;color:rgba(255,255,255,.6);margin-bottom:22px}
@@ -154,8 +154,8 @@ h2.sec{font-size:40px;font-weight:600;line-height:1.08;letter-spacing:-.02em;max
 
 <style>
 .phero{position:relative;background:#0f1830;color:#fff;overflow:hidden}
-.phero .bg{position:absolute;inset:0;background:url('/images/daniel-family-ride.webp') center 26%/cover;transform:scale(1.02)}
-.phero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,24,48,.92) 0%,rgba(15,24,48,.74) 44%,rgba(15,24,48,.42) 100%)}
+.phero .bg{position:absolute;inset:0;background:url('/images/daniel-family-ride.webp') center max(100%,calc(26% - 48px))/cover;transform:scale(1.02)}
+.phero .ov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,24,48,.96) 0%,rgba(15,24,48,.80) 44%,rgba(15,24,48,.48) 100%)}
 .phero .inner{position:relative;max-width:1180px;margin:0 auto;padding:190px 36px 96px}
 .framed{position:relative}
 .framed .frm{position:absolute;inset:-16px;border-radius:22px;border:2px solid var(--accent);transform:rotate(-3deg)}
