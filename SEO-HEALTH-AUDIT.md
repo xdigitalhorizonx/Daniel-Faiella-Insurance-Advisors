@@ -83,6 +83,14 @@ The `Person` schema carries `credentialCategory: "Nevada Insurance Producer Lice
 - **Compliance**: CMS TPMO disclaimer + government non-affiliation in the sitewide footer.
 - **Launch ops**: GTM (`GTM-KQTNQQ3M`) live, GSC verification meta live, pre-launch noindex header removed.
 
+## Status update — July 12, 2026 (same day)
+
+- **P0 #1 RESOLVED:** apex is now the primary domain in Vercel; www 308-redirects to it (verified live: apex serves 200 directly, www → 308 → apex).
+- **P2 #7 DONE (this branch):** titles trimmed to ≤64 chars on the six worst pages and descriptions to ≤162 on nine pages (og/twitter/schema mirrors updated); branded `404.html` added; `favicon.ico` fallback added; sitemap `lastmod` refreshed.
+- **P2 #8 DONE (this branch):** contact + newsletter forms now POST to FormSubmit (redirecting to a new noindexed `/contact-thanks` page, which doubles as a GA4 conversion pageview via GTM) instead of composing `mailto:` links. ⚠️ One-time setup: the first submission triggers a confirmation email to faiella.daniel@gmail.com — click it to activate delivery.
+- **P2 #9 DONE (this branch):** dedicated `/service-areas/fernley-nv` and `/service-areas/fallon-nv` pages built (unique local content: I-80 corridor/network-fit for Fernley; Banner Churchill + TRICARE For Life guidance for Fallon), wired into the homepage area grid, the service-areas hub, `sitemap.xml` (now 22 URLs), and `llms.txt`. Lighthouse SEO 100/100 on both.
+- Remaining from the original list: P0 #2 (GSC sitemap submission + Bing), P0 #3 (license #/NPN from Daniel), the P1 off-site program, and the blog-card image mismatch (needs a proper life-insurance image).
+
 ## Notes on evidence
 
 - Public fetches of the site (and of nextjs.org, as a control) return 403 to automated fetchers — that is Vercel's platform-level bot handling, **not** a site misconfiguration; authenticated fetches confirm the site serves 200 with correct headers and no `x-robots-tag`.
