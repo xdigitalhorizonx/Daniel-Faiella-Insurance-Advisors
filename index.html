@@ -524,5 +524,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </footer>
 
 <script>document.querySelectorAll('.nav-toggle').forEach(function(b){b.addEventListener('click',function(){var bar=b.closest('.bar')||b.closest('.dfx-bar');var open=bar.classList.toggle('open');b.setAttribute('aria-expanded',open)})});document.addEventListener('click',function(e){document.querySelectorAll('.bar.open,.dfx-bar.open').forEach(function(bar){if(!bar.contains(e.target)){bar.classList.remove('open');var t=bar.querySelector('.nav-toggle');t&&t.setAttribute('aria-expanded','false')}})});</script>
+<script>
+(function(){
+  var seq=["ArrowUp","ArrowUp","ArrowDown","ArrowDown","ArrowLeft","ArrowRight","ArrowLeft","ArrowRight","b","a"],i=0,go=false;
+  document.addEventListener("keydown",function(e){
+    if(go||e.metaKey||e.ctrlKey||e.altKey)return;
+    var t=e.target&&e.target.tagName;
+    if(t==="INPUT"||t==="TEXTAREA")return;
+    var k=e.key.length===1?e.key.toLowerCase():e.key;
+    i=(k===seq[i])?i+1:(k===seq[0]?1:0);
+    if(i===seq.length-1){var l=document.createElement("link");l.rel="prefetch";l.href="/win98";document.head.appendChild(l)}
+    if(i<seq.length)return;
+    go=true;
+    var st=document.createElement("style");
+    st.textContent="@keyframes w98b{to{width:100%}}.w98-boot{position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;z-index:99999;font-family:'Courier New',monospace;text-align:center;opacity:0;transition:opacity .3s}.w98-boot.show{opacity:1}";
+    document.head.appendChild(st);
+    var ov=document.createElement("div");
+    ov.className="w98-boot";
+    ov.innerHTML='<div><div style="font-size:46px;line-height:1;margin-bottom:14px">\ud83d\udcbe</div><div style="font-size:15px;letter-spacing:.08em">Starting Windows 98\u2026</div><div style="width:180px;height:14px;border:2px solid #fff;margin:16px auto 0;padding:2px"><span style="display:block;height:100%;width:0;background:#fff;animation:w98b .8s linear forwards"></span></div></div>';
+    document.body.appendChild(ov);
+    requestAnimationFrame(function(){ov.classList.add("show")});
+    setTimeout(function(){window.location.href="/win98"},950);
+  });
+})();
+</script>
 </body>
 </html>
