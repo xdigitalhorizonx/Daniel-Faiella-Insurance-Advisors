@@ -34,6 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="twitter:image" content="https://faiellainsurance.com/images/og/blog.png">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" as="image" href="/images/carson-balloons.webp">
 <link rel="preload" href="/fonts/newsreader-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/public-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -65,6 +66,8 @@ nav.main a:hover{color:var(--accent)}
 .hero{position:relative;background:var(--brand-d);color:#fff;overflow:hidden}
 .hero .glow{position:absolute;inset:0;background:radial-gradient(800px 600px at 80% 25%,color-mix(in srgb,var(--accent) 26%,transparent),transparent 62%)}
 .hero .wm{position:absolute;top:-70px;left:-40px;font-family:'Newsreader',serif;font-size:340px;font-weight:700;color:rgba(255,255,255,.045);line-height:1;pointer-events:none;user-select:none}
+.hero.photo .abg{position:absolute;inset:0;background:url('/images/carson-balloons.webp') center 46%/cover}
+.hero.photo .aov{position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,24,48,.93) 0%,rgba(15,24,48,.80) 44%,rgba(15,24,48,.52) 100%),linear-gradient(180deg,rgba(15,24,48,.30) 0%,rgba(15,24,48,.58) 100%)}
 .hero-inner{position:relative;max-width:1180px;margin:0 auto;padding:120px 36px 52px}
 .crumbs{font-size:12.5px;letter-spacing:.02em;color:rgba(255,255,255,.6);margin-bottom:22px}
 .crumbs a:hover{color:var(--accent)}
@@ -140,7 +143,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <header class="site"><div class="bar"><a class="brand" href="/"><span class="badge">DF</span><span class="nm"><span class="name">Daniel J. Faiella</span><span class="sub">Insurance Advisors · Carson City</span></span></a><nav class="main"><a href="/">Home</a><a href="/services">Services</a><a href="/service-areas">Service Areas</a><a href="/blog">Blog</a><a href="/about">About</a><a href="/contact">Contact</a><a class="pill" href="#contact">Get a free review</a></nav><button class="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button></div></header>
 
-<section class="hero"><div class="glow"></div><div class="wm">DF</div><div class="hero-inner">
+<section class="hero photo"><div class="abg"></div><div class="aov"></div><div class="hero-inner">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a> › <span>Blog</span></nav>
 <span class="eyebrow">The learning library</span>
 <h1 class="display">Insurance, <em>explained</em> — one plain-English article at a time.</h1>
