@@ -15,11 +15,25 @@
  * The sending domain (faiellainsurance.com) must be verified in Resend.
  */
 
+const crypto = require("crypto");
+
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const RESEND_AUDIENCES = "https://api.resend.com/audiences";
+// Newsletter subscribers are stored as contacts in this Resend Audience.
+const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID || "6f12a47e-8aad-4e30-a28a-6dfab62ccabf";
 const TO_EMAIL = process.env.CONTACT_TO_EMAIL || "daniel@faiellainsurance.com";
 const FROM = "Daniel Faiella Insurance <noreply@faiellainsurance.com>";
 const PHONE = "775-315-5572";
 const THANKS_URL = "/contact-thanks";
+
+// Signed unsubscribe link so only the recipient can unsubscribe themselves.
+function unsubToken(email, key) {
+  return crypto.createHmac("sha256", key).update(email.toLowerCase()).digest("hex").slice(0, 32);
+}
+
+function unsubUrl(email, key) {
+  return "https://faiellainsurance.com/api/unsubscribe?e=" + encodeURIComponent(email) + "&t=" + unsubToken(email, key);
+}
 
 function esc(s) {
   return String(s).replace(/[&<>"']/g, function (c) {
@@ -101,23 +115,57 @@ function newsletterNotify({ email }) {
   };
 }
 
-function newsletterConfirmation({ email }) {
+function newsletterConfirmation({ email }, apiKey) {
+  const unsub = unsubUrl(email, apiKey);
   return {
     from: FROM,
     to: [email],
-    subject: "You're on the list — Daniel Faiella Insurance",
+    subject: "You're opted in — Daniel's monthly newsletter",
+    headers: {
+      "List-Unsubscribe": `<${unsub}>`,
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+    },
     html: wrap(
-      `<h2 style="color:#0e2a47;margin:0 0 12px">You're on the list — talk soon.</h2>` +
-        `<p style="color:#0f172a;font-size:15px;line-height:1.6;margin:0 0 18px">Expect one plain-English email a month — Medicare deadlines, long-term-care tips, and retirement-income moves for Northern Nevada families. No spam, ever.</p>` +
+      `<h2 style="color:#0e2a47;margin:0 0 12px">You're opted in — talk soon.</h2>` +
+        `<p style="color:#0f172a;font-size:15px;line-height:1.6;margin:0 0 12px">You've been added to Daniel's newsletter. It arrives <strong>once a month, on the 1st</strong> — one plain-English email with Medicare deadlines, long-term-care tips, and retirement-income moves for Northern Nevada families. No spam, ever.</p>` +
+        `<p style="color:#0f172a;font-size:15px;line-height:1.6;margin:0 0 18px"><strong>Want out?</strong> <a href="${unsub}" style="color:#0e2a47;font-weight:bold">Unsubscribe with one click</a>, or email <a href="mailto:hello@faiellainsurance.com" style="color:#0e2a47">hello@faiellainsurance.com</a> and we'll remove you right away.</p>` +
         `<p style="color:#64748b;font-size:13px;line-height:1.5;margin:0">Daniel J. Faiella · Insurance Advisors · Carson City, Nevada<br>` +
         `This is an automated confirmation from an unmonitored address — please don't reply to it.</p>`
     ),
     text:
-      `You're on the list — talk soon.\n\n` +
-      `Expect one plain-English email a month — Medicare deadlines, long-term-care tips, and retirement-income moves for Northern Nevada families. No spam, ever.\n\n` +
+      `You're opted in — talk soon.\n\n` +
+      `You've been added to Daniel's newsletter. It arrives once a month, on the 1st — one plain-English email with Medicare deadlines, long-term-care tips, and retirement-income moves for Northern Nevada families. No spam, ever.\n\n` +
+      `Want out? Unsubscribe here: ${unsub}\n` +
+      `Or email hello@faiellainsurance.com and we'll remove you right away.\n\n` +
       `Daniel J. Faiella · Insurance Advisors · Carson City, Nevada\n` +
       `This is an automated confirmation from an unmonitored address — please don't reply to it.`,
   };
+}
+
+// Store the subscriber in the Resend Audience (create, then un-unsubscribe in
+// case they signed up before). Failures are logged but never block the signup.
+async function addToAudience(email, apiKey) {
+  const H = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+  try {
+    const create = await fetch(`${RESEND_AUDIENCES}/${AUDIENCE_ID}/contacts`, {
+      method: "POST",
+      headers: H,
+      body: JSON.stringify({ email, unsubscribed: false }),
+    });
+    if (!create.ok) {
+      console.error("Audience create failed:", create.status, await create.text().catch(() => ""));
+    }
+    const update = await fetch(`${RESEND_AUDIENCES}/${AUDIENCE_ID}/contacts/${encodeURIComponent(email)}`, {
+      method: "PATCH",
+      headers: H,
+      body: JSON.stringify({ unsubscribed: false }),
+    });
+    if (!update.ok) {
+      console.error("Audience update failed:", update.status, await update.text().catch(() => ""));
+    }
+  } catch (e) {
+    console.error("Audience call crashed:", e);
+  }
 }
 
 module.exports = async function handler(req, res) {
@@ -170,6 +218,10 @@ module.exports = async function handler(req, res) {
       body: JSON.stringify(payload),
     });
 
+  if (type === "newsletter") {
+    await addToAudience(data.email, apiKey);
+  }
+
   const notify = await send(type === "newsletter" ? newsletterNotify(data) : contactNotify(data));
   if (!notify.ok) {
     const detail = await notify.text().catch(() => "");
@@ -178,7 +230,7 @@ module.exports = async function handler(req, res) {
   }
 
   // Confirmation is best-effort: the submission already reached Daniel.
-  const confirm = await send(type === "newsletter" ? newsletterConfirmation(data) : contactConfirmation(data));
+  const confirm = await send(type === "newsletter" ? newsletterConfirmation(data, apiKey) : contactConfirmation(data));
   if (!confirm.ok) {
     const detail = await confirm.text().catch(() => "");
     console.error("Resend confirmation failed:", confirm.status, detail);
