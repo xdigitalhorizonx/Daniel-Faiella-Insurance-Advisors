@@ -4,6 +4,14 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/",
+      "has": [
+        { "type": "host", "value": "daniel-faiella-insurance-advisors.vercel.app" }
+      ],
+      "destination": "https://faiellainsurance.com/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         { "type": "host", "value": "daniel-faiella-insurance-advisors.vercel.app" }
