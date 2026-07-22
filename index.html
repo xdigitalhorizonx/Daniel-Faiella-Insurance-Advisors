@@ -551,7 +551,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<script>document.querySelectorAll('.nav-toggle').forEach(function(b){b.addEventListener('click',function(){var bar=b.closest('.bar')||b.closest('.dfx-bar');var open=bar.classList.toggle('open');b.setAttribute('aria-expanded',open)})});document.addEventListener('click',function(e){document.querySelectorAll('.bar.open,.dfx-bar.open').forEach(function(bar){if(!bar.contains(e.target)){bar.classList.remove('open');var t=bar.querySelector('.nav-toggle');t&&t.setAttribute('aria-expanded','false')}})});</script>
+<script>document.querySelectorAll('.nav-toggle').forEach(function(b){b.addEventListener('click',function(){var bar=b.closest('.bar')||b.closest('.dfx-bar');var open=bar.classList.toggle('open');b.setAttribute('aria-expanded',open)})});document.addEventListener('click',function(e){document.querySelectorAll('.bar.open,.dfx-bar.open').forEach(function(bar){if(!bar.contains(e.target)){bar.classList.remove('open');var t=bar.querySelector('.nav-toggle');t&&t.setAttribute('aria-expanded','false')}})});document.addEventListener('click',function(e){var a=e.target&&e.target.closest?e.target.closest('a'):null;if(!a||typeof gtag!=='function')return;var h=a.getAttribute('href')||'';if(h.lastIndexOf('tel:',0)===0)gtag('event','phone_call',{link_url:h});else if(h.lastIndexOf('mailto:',0)===0)gtag('event','email_click',{link_url:h})});</script>
 <script>
 (function(){
 var form=document.getElementById('nlform');if(!form)return;
@@ -564,7 +564,7 @@ form.addEventListener('submit',function(e){
   fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'newsletter',email:form.querySelector('[name="email"]').value,_honey:form.querySelector('[name="_honey"]').value})})
   .then(function(res){return res.json().catch(function(){return{}}).then(function(b){
     if(!res.ok)throw new Error(b.error||'');
-    form.style.display='none';
+    if(typeof gtag==='function')gtag('event','newsletter_signup');form.style.display='none';
     if(ok)ok.style.display='block';
   })})
   .catch(function(err){
