@@ -161,6 +161,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .cta svg { width: 20px; height: 20px; }
   .cta-note { text-align: center; font-size: 12.5px; color: var(--ink-dim); margin-top: -3px; }
 
+  /* ---- Newsletter opt-in ---- */
+  .nlbox { padding: 15px 15px 16px; display: flex; flex-direction: column; gap: 11px; }
+  .nlbox .nlsub { font-size: 12.8px; line-height: 1.6; color: var(--ink-dim); }
+  .nlform { display: flex; gap: 8px; flex-wrap: wrap; }
+  .nlform input[type="email"] {
+    flex: 1 1 170px; min-width: 0; padding: 13px 14px;
+    border-radius: 12px; background: var(--row);
+    border: 1px solid rgba(255,255,255,0.10);
+    color: #fff; font-family: inherit; font-size: 16px; /* 16px keeps iOS from zooming */
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .nlform input[type="email"]::placeholder { color: var(--ink-dim); }
+  .nlform input[type="email"]:focus {
+    outline: none; background: var(--row-hover);
+    border-color: rgba(220,184,114,0.55);
+    box-shadow: 0 0 0 3px rgba(200,154,78,0.12);
+  }
+  .nlform button {
+    flex: 0 0 auto; padding: 13px 20px; border: none; border-radius: 12px;
+    font-family: inherit; font-size: 14.5px; font-weight: 700;
+    color: var(--navy-deep); cursor: pointer;
+    background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold) 70%, #b98a3f 130%);
+    box-shadow: 0 8px 20px rgba(200,154,78,0.22), inset 0 1px 0 rgba(255,255,255,0.30);
+    transition: transform .15s ease, filter .2s ease;
+  }
+  .nlform button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.05); }
+  .nlform button:active:not(:disabled) { transform: translateY(0); }
+  .nlform button:disabled { opacity: .6; cursor: default; }
+  .nlmsg { font-size: 13px; line-height: 1.55; display: none; }
+  .nlmsg.is-ok { display: block; color: var(--gold-bright); }
+  .nlmsg.is-err { display: block; color: #ff8f8f; }
+
   /* ---- Panels ---- */
   .panel {
     background: rgba(255, 255, 255, 0.03);
@@ -273,6 +305,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       Add to Contacts
     </button>
     <p class="cta-note">Works on iPhone &amp; Android — saves straight to your phone</p>
+
+    <!-- Newsletter opt-in -->
+    <p class="section-label">One good email a month</p>
+    <section class="panel nlbox">
+      <p class="nlsub">Medicare deadlines, long-term-care tips, and retirement-income moves for Northern Nevada families — sent on the 1st of each month. No spam, ever. Unsubscribe anytime.</p>
+      <form class="nlform" id="nlform" action="/api/contact" method="POST">
+        <input type="hidden" name="type" value="newsletter">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address" autocomplete="email" inputmode="email">
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="nlmsg" id="nl-msg" role="status"></p>
+    </section>
 
     <!-- Contact -->
     <p class="section-label">Get in touch</p>
@@ -395,6 +440,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       setTimeout(() => URL.revokeObjectURL(url), 4000);
       showToast('Saving Daniel\u2019s contact card\u2026');
     });
+
+    // Newsletter opt-in \u2014 posts to the same /api/contact endpoint the homepage
+    // signup uses (type: "newsletter"), which adds the address to the Resend
+    // audience and sends the confirmation. Without JS the plain form POST still
+    // works and lands on /contact-thanks.
+    (function () {
+      const form = document.getElementById('nlform');
+      if (!form) return;
+      const msg = document.getElementById('nl-msg');
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+
+        const btn = form.querySelector('button[type="submit"]');
+        btn.disabled = true; btn.textContent = 'Sending\u2026';
+        msg.className = 'nlmsg';
+
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type: 'newsletter',
+            email: form.querySelector('[name="email"]').value,
+            _honey: form.querySelector('[name="_honey"]').value
+          })
+        })
+          .then((res) => res.json().catch(() => ({})).then((body) => {
+            if (!res.ok) throw new Error(body.error || '');
+            if (typeof gtag === 'function') gtag('event', 'newsletter_signup');
+            form.style.display = 'none';
+            msg.textContent = '\u2713 You\u2019re on the list \u2014 check your inbox for a confirmation.';
+            msg.className = 'nlmsg is-ok';
+            showToast('You\u2019re on the list\u2026');
+          }))
+          .catch((err) => {
+            btn.disabled = false; btn.textContent = 'Subscribe';
+            msg.textContent = (err && err.message) || 'Something went wrong \u2014 please try again, or text 775-315-5572.';
+            msg.className = 'nlmsg is-err';
+          });
+      });
+    })();
   </script>
 </body>
 </html>
