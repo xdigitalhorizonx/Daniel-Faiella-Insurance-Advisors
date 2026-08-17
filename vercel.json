@@ -12,6 +12,30 @@
       "permanent": true
     },
     {
+      "source": "/index.html",
+      "has": [
+        { "type": "host", "value": "www.faiellainsurance.com" }
+      ],
+      "destination": "https://faiellainsurance.com/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*/index.html",
+      "has": [
+        { "type": "host", "value": "www.faiellainsurance.com" }
+      ],
+      "destination": "https://faiellainsurance.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*\\.html",
+      "has": [
+        { "type": "host", "value": "www.faiellainsurance.com" }
+      ],
+      "destination": "https://faiellainsurance.com/:path*",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [
         { "type": "host", "value": "www.faiellainsurance.com" }
