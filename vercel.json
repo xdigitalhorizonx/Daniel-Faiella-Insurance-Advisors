@@ -4,6 +4,11 @@
   "trailingSlash": false,
   "redirects": [
     {
+      "source": "/blog/medicare-irmaa-nevada",
+      "destination": "https://faiellainsurance.com/services/medicare",
+      "permanent": true
+    },
+    {
       "source": "/",
       "has": [
         { "type": "host", "value": "www.faiellainsurance.com" }
