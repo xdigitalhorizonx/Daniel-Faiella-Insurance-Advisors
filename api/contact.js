@@ -11,6 +11,10 @@
  * Accepts JSON (fetch) and application/x-www-form-urlencoded (no-JS
  * fallback — responds with a 303 redirect to /contact-thanks).
  *
+ * Spam is filtered server-side with no captcha — see the SPAM FILTERING block
+ * below. Visitors never see a challenge; bots get a success response and no
+ * email is sent.
+ *
  * Requires the RESEND_API_KEY environment variable (Vercel project settings).
  * The sending domain (faiellainsurance.com) must be verified in Resend.
  */
@@ -25,6 +29,144 @@ const TO_EMAIL = process.env.CONTACT_TO_EMAIL || "daniel@faiellainsurance.com";
 const FROM = "Daniel Faiella Insurance <noreply@faiellainsurance.com>";
 const PHONE = "775-315-5572";
 const THANKS_URL = "/contact-thanks";
+
+// ---------------------------------------------------------------------------
+// SPAM FILTERING — nothing for a real visitor to solve, see, or click.
+//
+// Hard rules (a filled honeypot, an off-site origin, an instant fill, a
+// link-stuffed or non-Latin message, flooding, a re-sent duplicate) drop a
+// submission on their own. Weaker signals only add a point each; SCORE_LIMIT
+// points drop it too. A dropped submission gets the same success response a
+// real one does — a bot learns nothing to tune against — and no email is sent.
+// Every drop is logged with its reasons, so false positives show up in the
+// Vercel function logs.
+// ---------------------------------------------------------------------------
+
+const ALLOWED_HOSTS = ["faiellainsurance.com", "www.faiellainsurance.com"];
+const MIN_FILL_MS = 3000; // nobody reads the form and answers it faster
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const RATE_MAX = 5; // submissions per IP per window
+const DEDUPE_MS = 30 * 60 * 1000;
+const SCORE_LIMIT = 2;
+const MAP_LIMIT = 5000;
+
+// Matched with .match() only — a /g/ regex is stateful under .test().
+const LINK_RE = /(https?:\/\/|www\.|\[url|\[link|<a\s)/gi;
+const NON_LATIN_RE = /[Ѐ-ӿ֐-׿؀-ۿ぀-ヿ一-鿿]/;
+
+// Phrases from SEO/backlink/loan blasts. Word-bounded so ordinary words that
+// merely contain them ("Seoul") don't match.
+const SPAM_PHRASES = [
+  /\bseo\b/, /\bbacklinks?\b/, /\bguest post(ing)?\b/, /\blink building\b/, /\bwrite for us\b/,
+  /\bcrypto(currency)?\b/, /\bbitcoin\b/, /\bcasino\b/, /\bviagra\b/, /\bcialis\b/,
+  /\bdear (sir|madam|owner)\b/, /\brank (your site|#?1|higher)\b/, /\bincrease (your )?(traffic|sales|ranking)\b/,
+  /\bweb ?(site )?design services\b/, /\btelegram\b/, /\bwhats ?app me\b/, /\bmake money\b/,
+  /\bunsecured (business )?(loan|funding)\b/, /\bbusiness (loan|funding) (offer|available)\b/,
+];
+
+const DISPOSABLE_DOMAINS = [
+  "mailinator.com", "guerrillamail.com", "10minutemail.com", "tempmail.com", "temp-mail.org",
+  "yopmail.com", "trashmail.com", "sharklasers.com", "getnada.com", "dispostable.com",
+  "maildrop.cc", "throwawaymail.com", "fakeinbox.com", "mailnesia.com",
+];
+
+// Per-instance memory. A warm function keeps these across invocations, which is
+// enough to stop a burst from one source; both are pruned and hard-capped so a
+// flood can't grow them without bound.
+const attempts = new Map(); // ip -> timestamps
+const delivered = new Map(); // fingerprint -> timestamp
+
+function prune(map, maxAge, now) {
+  for (const [key, value] of map) {
+    const last = Array.isArray(value) ? value[value.length - 1] : value;
+    if (now - last > maxAge) map.delete(key);
+  }
+  while (map.size > MAP_LIMIT) map.delete(map.keys().next().value);
+}
+
+function clientIp(req) {
+  const fwd = String(req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || "");
+  return fwd.split(",")[0].trim() || "unknown";
+}
+
+// true = came from our site, false = came from somewhere else, null = neither
+// header was sent (suspicious on its own, but not proof — some privacy tools
+// strip them).
+function fromOurSite(req) {
+  const hostOf = (value) => {
+    try {
+      return new URL(String(value)).hostname;
+    } catch (e) {
+      return "";
+    }
+  };
+  // Browsers send Origin on every POST, same-origin ones included.
+  const host = hostOf(req.headers.origin) || hostOf(req.headers.referer);
+  if (!host) return null;
+  return ALLOWED_HOSTS.includes(host) || host.endsWith(".vercel.app");
+}
+
+function hits(regexes, text) {
+  return regexes.filter((re) => re.test(text)).length;
+}
+
+function spamCheck(req, body, data, type, now) {
+  const hard = [];
+  const soft = [];
+
+  // Honeypots: fields no visitor can see. _honey is display:none (naive bots
+  // fill everything); website is positioned off-screen (bots that skip
+  // display:none often still fill it).
+  if (field(body._honey, 200) || field(body._hp2, 200) || field(body.company, 200) || field(body.website, 200))
+    hard.push("honeypot filled");
+
+  const origin = fromOurSite(req);
+  if (origin === false) hard.push("posted from another origin");
+  else if (origin === null) soft.push("no origin or referer");
+
+  // _el is milliseconds between page load and submit, measured entirely in the
+  // browser so a wrong client clock can't matter. Absent on no-JS posts.
+  const elapsed = parseInt(field(body._el, 20), 10);
+  if (Number.isFinite(elapsed) && elapsed >= 0) {
+    if (elapsed < MIN_FILL_MS) hard.push("submitted " + elapsed + "ms after load");
+  } else {
+    soft.push("no fill timer");
+  }
+
+  if (type === "contact") {
+    const links = (data.message.match(LINK_RE) || []).length;
+    if (links >= 2) hard.push(links + " links in message");
+    else if (links === 1) soft.push("link in message");
+
+    if ((data.name.match(LINK_RE) || []).length) hard.push("link in name");
+    if (NON_LATIN_RE.test(data.name + data.message)) hard.push("non-Latin script");
+
+    const phrases = hits(SPAM_PHRASES, data.message.toLowerCase());
+    if (phrases >= 2) hard.push(phrases + " spam phrases");
+    else if (phrases === 1) soft.push("spam phrase");
+
+    if (data.message.length < 10) soft.push("message under 10 characters");
+  }
+
+  const domain = (data.email.split("@")[1] || "").toLowerCase();
+  if (DISPOSABLE_DOMAINS.includes(domain)) soft.push("disposable address");
+
+  const ip = clientIp(req);
+  prune(attempts, RATE_WINDOW_MS, now);
+  const stamps = (attempts.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (stamps.length >= RATE_MAX) hard.push(stamps.length + " submissions in " + RATE_WINDOW_MS / 60000 + " min");
+  stamps.push(now);
+  attempts.set(ip, stamps);
+
+  // Only messages that were actually delivered are remembered, so a visitor
+  // retrying after a send failure is never mistaken for a bot re-posting.
+  prune(delivered, DEDUPE_MS, now);
+  const fingerprint = type + ":" + data.email.toLowerCase() + ":" + data.message.slice(0, 200);
+  if (delivered.has(fingerprint)) hard.push("duplicate of a delivered message");
+
+  const reasons = hard.concat(soft);
+  return { spam: hard.length > 0 || soft.length >= SCORE_LIMIT, reasons, fingerprint, ip };
+}
 
 // Signed unsubscribe link so only the recipient can unsubscribe themselves.
 function unsubToken(email, key) {
@@ -193,11 +335,6 @@ module.exports = async function handler(req, res) {
 
   const body = req.body || {};
 
-  // Honeypot: hidden field real visitors never fill. Pretend success for bots.
-  if (field(body._honey, 200) || field(body.company, 200)) {
-    return done(200, { ok: true });
-  }
-
   const type = field(body.type, 20) === "newsletter" ? "newsletter" : "contact";
   const data = {
     name: field(body.name, 200),
@@ -209,6 +346,17 @@ module.exports = async function handler(req, res) {
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
   if (!emailOk || (type === "contact" && !data.name)) {
     return done(400, { error: "Please provide your name and a valid email address." });
+  }
+
+  // Looks like a bot: answer exactly as we would a real submission, send
+  // nothing, and log why so a false positive is visible in the function logs.
+  const verdict = spamCheck(req, body, data, type, Date.now());
+  if (verdict.spam) {
+    console.warn(
+      "Spam blocked:",
+      JSON.stringify({ type, ip: verdict.ip, email: data.email, reasons: verdict.reasons })
+    );
+    return done(200, { ok: true });
   }
 
   const send = (payload) =>
@@ -228,6 +376,8 @@ module.exports = async function handler(req, res) {
     console.error("Resend notification failed:", notify.status, detail);
     return done(502, { error: "We couldn't send your message. Please call or text " + PHONE + "." });
   }
+
+  delivered.set(verdict.fingerprint, Date.now());
 
   // Confirmation is best-effort: the submission already reached Daniel.
   const confirm = await send(type === "newsletter" ? newsletterConfirmation(data, apiKey) : contactConfirmation(data));

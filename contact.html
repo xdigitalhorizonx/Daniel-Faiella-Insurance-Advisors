@@ -163,6 +163,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div>
 <form class="cform" id="contactForm" action="/api/contact" method="POST">
 <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="text" name="_hp2" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"><input type="hidden" name="_el" value="">
 <h2>Send a message</h2>
 <p class="fsub">Tell me a little about what you need, and I’ll follow up personally. No pressure, no obligation — the first conversation is always free.</p>
 <div class="row2">
@@ -195,6 +196,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 (function(){
 var form=document.getElementById('contactForm');if(!form)return;
+var loadedAt=Date.now();
 var note=document.getElementById('formNote');
 var fallback=note?note.innerHTML:'';
 form.addEventListener('submit',function(e){
@@ -204,7 +206,7 @@ form.addEventListener('submit',function(e){
   var v=function(id){var el=document.getElementById(id);return el?el.value:''};
   btn.disabled=true;btn.textContent='Sending…';
   if(note)note.textContent='';
-  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:v('cf-name'),phone:v('cf-phone'),email:v('cf-email'),message:v('cf-message'),_honey:form.querySelector('[name="_honey"]').value})})
+  fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:v('cf-name'),phone:v('cf-phone'),email:v('cf-email'),message:v('cf-message'),_honey:form.querySelector('[name="_honey"]').value,_hp2:form.querySelector('[name="_hp2"]').value,_el:String(Date.now()-loadedAt)})})
   .then(function(res){return res.json().catch(function(){return{}}).then(function(b){
     if(!res.ok)throw new Error(b.error||'');
     window.location.href='/contact-thanks';
