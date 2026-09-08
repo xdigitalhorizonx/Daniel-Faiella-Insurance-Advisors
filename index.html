@@ -93,10 +93,23 @@ header.site{position:absolute;top:0;left:0;right:0;z-index:50}
 .stats b{font-family:'Newsreader',serif;font-size:34px;font-weight:600;color:var(--accent);display:block}
 .stats span{font-size:13px;opacity:.7}
 .portrait-wrap{position:relative}
-.portrait-frame{position:absolute;inset:-18px;border-radius:24px;border:2px solid var(--accent);transform:rotate(-3deg)}
+.portrait-frame{position:absolute;top:-18px;left:-18px;right:-18px;height:576px;border-radius:24px;border:2px solid var(--accent);transform:rotate(-3deg)}
 .portrait-card{position:relative;border-radius:20px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.45)}
 .dfx-portrait{display:block;width:100%;height:540px;object-fit:cover;object-position:center 20%}
-.portrait-tag{position:absolute;bottom:-22px;left:-22px;background:#fff;color:var(--brand);padding:16px 22px;border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.3);transform:rotate(-2deg)}
+.portrait-tag{position:absolute;top:518px;left:-22px;background:#fff;color:var(--brand);padding:16px 22px;border-radius:16px;box-shadow:0 18px 40px rgba(0,0,0,.3);transform:rotate(-2deg);z-index:2}
+/* next up (one event at a time; see .next-up markup) */
+.next-up{margin-top:58px;padding:22px 26px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);transition:border-color .2s,background .2s}
+.next-up:hover{border-color:color-mix(in srgb,var(--accent) 60%,transparent);background:rgba(255,255,255,.08)}
+.next-up ol{list-style:none;margin:0;padding:0}
+.next-up li>a{display:block;color:inherit}
+.next-up .lbl{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--accent)}
+.next-up .lbl small{font-size:10.5px;letter-spacing:.12em;opacity:.8}
+.next-up .ttl{font-family:'Newsreader',serif;font-size:24px;font-weight:600;line-height:1.15;margin-top:8px;text-wrap:balance}
+.next-up .dtl{font-size:14px;line-height:1.5;color:rgba(255,255,255,.7);margin-top:6px}
+.next-up .go{display:inline-block;margin-top:14px;font-size:14px;font-weight:700;color:var(--accent);border-bottom:1px solid color-mix(in srgb,var(--accent) 50%,transparent);padding-bottom:2px}
+.next-up li>a:hover .go{border-color:var(--accent)}
+.next-up .empty{display:none;margin:0;font-size:14px;line-height:1.5;color:rgba(255,255,255,.72)}
+.next-up .empty a{color:var(--accent);font-weight:600}
 .portrait-tag .sig{font-family:'Caveat',cursive;font-size:30px;font-weight:700;line-height:.9}
 .portrait-tag .st{font-size:12px;letter-spacing:.04em;color:var(--muted);margin-top:2px}
 /* marquee */
@@ -229,6 +242,9 @@ footer.site .badge{width:38px;height:38px;font-size:21px}
   .dfx-wm{font-size:104px}
   .dfx-lead{font-size:17px}
   .dfx-portrait{height:360px}
+  .portrait-frame{height:396px}
+  .portrait-tag{top:338px}
+  .next-up{padding:18px 20px;margin-top:56px}
   #learn,#services,#blog{padding:48px 18px}
   #areas .in,#contact .in,#faq .in{padding:52px 18px}
   .dfx-nav>a:not(:last-child){display:none}
@@ -299,6 +315,52 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="sig">Daniel J. Faiella</div>
         <div class="st">Licensed Advisor &middot; Estate Advisor &middot; Educator</div>
       </div>
+
+      <!-- NEXT UP. One event shows at a time: the first <li> whose data-end (or data-start) is not past.
+           Keep rows in date order; add an event by copying a row. Seminar details from the hosted flyer. -->
+      <aside class="next-up" aria-label="Next up">
+        <ol id="next-up-list">
+          <li data-start="2026-10-06" data-end="2026-10-08">
+            <a href="/events/wills-living-trusts-seminar-oct-2026.pdf" target="_blank" rel="noopener" aria-label="Wills &amp; Living Trusts seminar flyer (PDF)">
+              <div class="lbl"><span>Next up &middot; Oct 6, 7 or 8</span><small>Free</small></div>
+              <div class="ttl">Wills &amp; Living Trusts seminar</div>
+              <div class="dtl">Carson City Senior Center &middot; 6:30 p.m. &middot; Reserve: (833) 340-1080</div>
+              <div class="go">View the flyer &rarr;</div>
+            </a>
+          </li>
+          <li data-start="2026-10-15" data-end="2026-12-07">
+            <a href="#contact">
+              <div class="lbl"><span>Next up &middot; Oct 15 &ndash; Dec 7</span></div>
+              <div class="ttl">Medicare Annual Enrollment</div>
+              <div class="dtl">Compare 2027 plans with Daniel &middot; Free, in person or by phone</div>
+              <div class="go">Book your review</div>
+            </a>
+          </li>
+          <li data-start="2027-01-01" data-end="2027-03-31">
+            <a href="#contact">
+              <div class="lbl"><span>Next up &middot; Jan 1 &ndash; Mar 31</span></div>
+              <div class="ttl">Medicare Advantage Open Enrollment</div>
+              <div class="dtl">One switch allowed if your new plan isn&rsquo;t working out</div>
+              <div class="go">Book your review</div>
+            </a>
+          </li>
+        </ol>
+        <p class="empty" id="next-up-empty">Nothing on the calendar right now. <a href="#contact">Book a one-on-one</a> any time.</p>
+      </aside>
+      <script>
+      (function(){
+        var list=document.getElementById('next-up-list');if(!list)return;
+        var today=new Date();today.setHours(0,0,0,0);
+        var parse=function(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2]);};
+        var shown=false;
+        Array.prototype.forEach.call(list.children,function(li){
+          var end=parse(li.getAttribute('data-end')||li.getAttribute('data-start'));
+          if(shown||today>end){li.style.display='none';return;}
+          shown=true;
+        });
+        if(!shown){list.style.display='none';var e=document.getElementById('next-up-empty');if(e)e.style.display='block';}
+      })();
+      </script>
     </div>
   </div>
 </section>
