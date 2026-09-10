@@ -313,6 +313,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <form class="nlform" id="nlform" action="/api/contact" method="POST">
         <input type="hidden" name="type" value="newsletter">
         <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input type="text" name="_hp2" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"><input type="hidden" name="_el" value="">
         <input type="email" name="email" required placeholder="you@email.com" aria-label="Email address" autocomplete="email" inputmode="email">
         <button type="submit">Subscribe</button>
       </form>
@@ -445,6 +446,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     (function () {
       const form = document.getElementById('nlform');
       if (!form) return;
+      const loadedAt = Date.now();
       const msg = document.getElementById('nl-msg');
 
       form.addEventListener('submit', (e) => {
@@ -461,7 +463,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           body: JSON.stringify({
             type: 'newsletter',
             email: form.querySelector('[name="email"]').value,
-            _honey: form.querySelector('[name="_honey"]').value
+            _honey: form.querySelector('[name="_honey"]').value,
+            _hp2: form.querySelector('[name="_hp2"]').value,
+            _el: String(Date.now() - loadedAt)
           })
         })
           .then((res) => res.json().catch(() => ({})).then((body) => {
