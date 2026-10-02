@@ -101,7 +101,8 @@ function contactConfirmation({ name, email }) {
   };
 }
 
-function newsletterNotify({ email }) {
+function newsletterNotify({ email, source }) {
+  const via = source || "the homepage";
   return {
     from: FROM,
     to: [TO_EMAIL],
@@ -109,9 +110,9 @@ function newsletterNotify({ email }) {
     subject: "New newsletter signup — faiellainsurance.com",
     html: wrap(
       `<h2 style="color:#0e2a47;margin:0 0 12px">New newsletter signup</h2>` +
-        `<p style="color:#0f172a;font-size:15px;margin:0"><strong>${esc(email)}</strong> subscribed via the homepage.</p>`
+        `<p style="color:#0f172a;font-size:15px;margin:0"><strong>${esc(email)}</strong> subscribed via ${esc(via)}.</p>`
     ),
-    text: `New newsletter signup on faiellainsurance.com: ${email}`,
+    text: `New newsletter signup on faiellainsurance.com: ${email} (via ${via})`,
   };
 }
 
@@ -204,6 +205,7 @@ module.exports = async function handler(req, res) {
     phone: field(body.phone, 50),
     email: field(body.email, 200),
     message: field(body.message, 5000),
+    source: field(body.source, 40),
   };
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
