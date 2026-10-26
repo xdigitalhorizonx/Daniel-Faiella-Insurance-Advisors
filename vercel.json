@@ -9,6 +9,11 @@
       "permanent": true
     },
     {
+      "source": "/blog/group-vs-individual-life-insurance-nevada",
+      "destination": "https://faiellainsurance.com/blog/pension-maximization-nevada-pers",
+      "permanent": true
+    },
+    {
       "source": "/",
       "has": [
         { "type": "host", "value": "www.faiellainsurance.com" }
