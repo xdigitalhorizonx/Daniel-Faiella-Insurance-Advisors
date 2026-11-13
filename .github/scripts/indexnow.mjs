@@ -111,17 +111,32 @@ async function loadState() {
   }
 }
 
+// A brand-new key is verified asynchronously: until the search engine has
+// fetched it, submissions get 403 SiteVerificationNotCompleted ("wait and try
+// again"). That and 429 are worth waiting out; anything else is a real error.
+const RETRY_WAITS = [30, 60, 90, 120];
+
+function retryable(status, text) {
+  return status === 429 || (status === 403 && /SiteVerificationNotCompleted/i.test(text));
+}
+
 async function submit(urls) {
   for (let i = 0; i < urls.length; i += BATCH) {
     const urlList = urls.slice(i, i + BATCH);
-    const res = await fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "content-type": "application/json; charset=utf-8", "user-agent": UA },
-      body: JSON.stringify({ host: HOST, key: KEY, keyLocation: KEY_LOCATION, urlList }),
-    });
-    const text = (await res.text()).slice(0, 300);
-    console.log(`IndexNow: HTTP ${res.status} for ${urlList.length} URLs ${text}`);
-    if (res.status !== 200 && res.status !== 202) {
+    for (let attempt = 0; ; attempt++) {
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "content-type": "application/json; charset=utf-8", "user-agent": UA },
+        body: JSON.stringify({ host: HOST, key: KEY, keyLocation: KEY_LOCATION, urlList }),
+      });
+      const text = (await res.text()).slice(0, 300);
+      console.log(`IndexNow: HTTP ${res.status} for ${urlList.length} URLs ${text}`);
+      if (res.status === 200 || res.status === 202) break;
+      if (retryable(res.status, text) && attempt < RETRY_WAITS.length) {
+        console.log(`retrying in ${RETRY_WAITS[attempt]}s`);
+        await sleep(RETRY_WAITS[attempt] * 1000);
+        continue;
+      }
       fail(`IndexNow rejected the submission: HTTP ${res.status} ${text}`);
     }
   }
